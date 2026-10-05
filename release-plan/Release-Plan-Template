@@ -1,0 +1,425 @@
+# Release Action Plan — Template
+
+---
+
+## 0. Document Information
+
+| Field | Value |
+| --- | --- |
+| **Project / Release Name** | [Project or feature name] |
+| **Release Type** | [New feature / Enhancement / Defect fix / Hotfix / Infrastructure update] |
+| **Epic / Ticket(s)** | [Ticket ID and link] |
+| **Release Date and Time** | [YYYY-MM-DD HH:MM (Timezone)] |
+| **Document Version** | [v1.0] |
+| **Document Owner** | [Name, QA Engineer] |
+| **Status** | [Draft / In Review / Approved / Released / Closed] |
+
+### Project Team
+
+| Role | Name |
+| --- | --- |
+| **Product Owner** | [Name] |
+| **Product Manager** | [Name or N/A] |
+| **Scrum Master / Project Manager** | [Name] |
+| **Business Analyst(s)** | [Name or N/A] |
+| **Software Engineer(s)** | [Name] |
+| **Quality Assurance Engineer(s)** | [Name] |
+| **DevOps Engineer(s)** | [Name] |
+| **Designer(s)** | [Name or N/A] |
+| **Release Manager** | [Name] |
+| **Release Plan Reviewers** | [Senior Developer(s)], [Senior QA / QA Lead] |
+
+---
+
+## 1. Timeline
+
+| Task | Start Date – End Date |
+| --- | --- |
+| Coding, self-checking and code review | [YYYY-MM-DD – YYYY-MM-DD] |
+| Test deliverables creation (test plan, scenario matrix, test cases) | [YYYY-MM-DD – YYYY-MM-DD] |
+| Testing (functional and regression) | [YYYY-MM-DD – YYYY-MM-DD] |
+| Bug fixing and re-testing | [YYYY-MM-DD – YYYY-MM-DD] |
+| User Acceptance Testing (UAT) | [YYYY-MM-DD] |
+| **Release date and time** | **[YYYY-MM-DD HH:MM (Timezone)]** |
+| Post-release monitoring period | [YYYY-MM-DD – YYYY-MM-DD] *(e.g., 1–2 weeks)* |
+
+---
+
+## 2. Summary of Changes / Release Log
+
+### 2.1 In Scope
+
+| Repository / Component | Release Branch | Merge Request | Spec / Technical Document | Summary of Changes |
+| --- | --- | --- | --- | --- |
+| [Back-end service / API] | [release/branch-name] | [Link] | [Link] | - New endpoint: `[METHOD /api/v1/resource]` — [purpose]<br>- [Business logic change] |
+| [Admin / back-office tool] | [release/branch-name] | [Link] | [Link] | - New module: [name]<br>- Scheduled job: `[cron expression]` — [what it does]<br>- Bulk upload / import: [description]<br>- Email notifications to [users] and [staff] |
+| [Customer- or user-facing web app] | [release/branch-name] | [Link] | [Link] | - [UI change / new modal / new validation rule] |
+
+**Related Tickets**
+
+| Ticket | Description |
+| --- | --- |
+| [Ticket ID] | [Short description] |
+| [Data request ticket ID] | [Database change / initial data setup] |
+| [Configuration ticket ID] | [Environment variable / CI variable / server configuration] |
+
+### 2.2 Out of Scope
+
+- [User types or account types not affected by this release]
+- [Inactive / legacy records]
+- [Legacy tool or module that stays unchanged]
+- [Related logic intentionally not changed in this release]
+
+---
+
+## 3. Release and Monitoring
+
+### 3.1 Release Sequence
+
+> List the exact order of deployment. Dependencies (e.g., API before front end) must be released first.
+
+- [ ] Execute data request(s) — [table creation / initial values / data updates]
+- [ ] Release Component #1 — [back-end service / API]
+- [ ] Release Component #2 — [admin tool]
+- [ ] Release Component #3 — [user-facing web app]
+- [ ] Enable scheduled job(s) — [job name]
+- [ ] Production verification
+
+**Release Tickets:** [Link per component]
+**Release Calendar Entry:** [Link to shared release schedule]
+
+### 3.2 Detailed Release Checklist
+
+| Date | Task | Person in Charge | Completion Criteria |
+| --- | --- | --- | --- |
+| **PHASE 1: Release Preparation** ||||
+| [Date] | Complete merge request trail | Dev Team / QA | - [ ] Code review approved ("LGTM")<br>- [ ] "Ready for QA Testing" comment<br>- [ ] "Passed QA Testing — Ready for Release" comment |
+| [Date] | User Acceptance Testing approval | Product Owner | - [ ] UAT checklist link: [Link] |
+| [Date] | Release Action Plan creation | QA / Dev Team | - [ ] Plan is complete |
+| [Date] | Release Action Plan review | Dev Supervisor, QA Supervisor (or 2 Senior Devs + 2 Senior QAs) | - [ ] Dev approval comment<br>- [ ] QA approval comment |
+| [Date] | Change / release approval request | Project Manager | - [ ] Approval request filed and approved: [Link]<br>- [ ] Proof of approval attached to release ticket |
+| [Date] | Data request preparation and execution | Dev Team / Supervisors | - [ ] [Data request ticket link] |
+| [Date] | Environment / CI variable setup | DevOps | - [ ] `[VARIABLE_NAME]` configured |
+| [Date] | Test account preparation and information sharing | QA | - [ ] Test accounts ready<br>- [ ] QAs and stakeholders informed of release schedule |
+| [Date] | Final pre-release check | Release Manager | - [ ] Complete code trail in version control<br>- [ ] Approval attached<br>- [ ] Release time and sequence confirmed with project team |
+| **PHASE 2: Release Process** ||||
+| [Date, Time] | Release Component #1 — [Release ticket link] | Release Manager | Follow the standard release guide |
+| [Date, Time] | Release Component #2 & #3 — [Release ticket links] | Release Manager | Follow the standard release guide |
+| **PHASE 3: Production Verification** ||||
+| [Date] | Start production verification | QA / Dev Team | See Section 7 |
+| [Date] | Issue handling (if any) | Dev Team / QA | Follow Section 5 — In Case of Defect Found |
+| [Date] | Finish production verification | QA | Overall status updated |
+| **PHASE 4: Closing and Monitoring** ||||
+| [Date] | Close release ticket(s) | Release Manager | |
+| [Date] | Inform stakeholders of release | Product Owner / Product Manager | Via stakeholder channel |
+| [Date] | Update epic / parent ticket | Product Manager | |
+| [Date – Date] | Monitor user/operations reports | Project Team | Via operations channel |
+| [Date – Date] | Monitor logs and metrics | Dev Team / DevOps | [e.g., AWS CloudWatch, Grafana] |
+| [Date] | Test data cleanup | QA / Dev Team | |
+
+### 3.3 Other Releases / Server Updates on the Same Day
+
+| Other Release / Server Update | Date & Time | Will It Affect Our Release? | Remarks / Contingency |
+| --- | --- | --- | --- |
+| [Other team's release] | [Date, Time] | [Yes / No] | Prepare a rollback branch containing only our changes, in case the other team rolls back |
+| [Server / infrastructure update] | [Date, Time] | [Yes / No] | [Coordinate with that team if an issue occurs] |
+
+---
+
+## 4. Communication Plan
+
+| Channel | Audience | Used For |
+| --- | --- | --- |
+| [Project team channel] | Project team only | Internal discussion, step-by-step release progress, decision-making |
+| [Stakeholder channel] | Product / business stakeholders | Release announcements, addressing concerns |
+| [Operations / support channel] | Operations and customer support | Announcements, issue reporting from users |
+| [Release & incident announcement channel] | Company-wide | Release, outage and recovery notices |
+| [Alerting channel, e.g., Slack alerts] | Engineering | Automated error alerts |
+| [Emergency / after-hours channel] | On-call engineers | Issues needing developer attention outside business hours |
+| Email | End users | User-facing notices (if needed) |
+
+---
+
+## 5. In Case of Defect Found
+
+| Step | Point Person | Expected Actions | Remarks |
+| --- | --- | --- | --- |
+| **1. Defect found** | [Developer], [QA] | 1. Report the issue in the project team channel.<br>2. Acknowledge any report received from support or stakeholders. | [Fill in if a defect occurs] |
+| **2. Information sharing** | [Product Owner / Business Analyst] | Inform the Product Owner via the stakeholder channel. If end users are directly affected, inform operations. | |
+| **3. Investigation** | [Developer], [QA] | 1. Reproduce the issue in staging.<br>2. Investigate the codebase, logs and data.<br>3. Confirm impact and share with the team. | |
+| **4. Reporting findings** | [Developer], [QA] | Share bug size, affected users/records, recommendation, and estimated fix time. | |
+| **5. Decision** | [Product Owner / Project Manager] | Decide: **immediate rollback** or **hotfix** (see decision guide below). | |
+| **6. End result** | Project Team | Announce the outcome in the project, stakeholder and operations channels. | |
+
+**Decision guide (rollback vs. hotfix)**
+
+| Condition | Action |
+| --- | --- |
+| Affects all users or a critical flow (e.g., users cannot log in, core transaction fails) | **Rollback** |
+| Affects specific conditions only and a fix can be released **within a day** | **Hotfix** |
+| Fix will take **more than a day** | **Rollback**, then re-release with the fix |
+| Cosmetic / low impact (typos, labels, layout) | **Bug ticket / next scheduled patch** |
+| A scheduled job is producing incorrect data | **Disable the job immediately**, then investigate and correct data |
+
+---
+
+## 6. Contingency Plan
+
+### 6.1 Risk Identification and Severity Rating
+
+> List realistic failure scenarios **before** the release. Severity: Critical / Major / Minor / Trivial. Probability and Impact: Low / Medium / High.
+
+| # | Scenario | Severity | Probability | Impact | Mitigation (before release) | Action Plan (if it happens) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Scheduled job did not run on time | Major | [ ] | [ ] | Tested in staging and UAT | - Check job logs and schedule configuration<br>- Trigger the job manually<br>- If it persists: hotfix the schedule or ask DevOps to run it manually |
+| 2 | Scheduled job ran only partially (missing records in the summary report) | Major | [ ] | [ ] | Tested in staging and UAT | - Identify affected records from the summary email<br>- Check for data inconsistency with the dependent service<br>- Run data correction / submit data update request<br>- Re-run the job for specific records |
+| 3 | Wrong business rule / threshold applied to users | Major | [ ] | High | Boundary-value testing, UAT | - Disable the job<br>- Check result records<br>- Submit data correction request<br>- Hotfix |
+| 4 | Restriction / action applied to users who should be excluded | Critical | [ ] | High | User-type coverage testing | - Disable the job<br>- Lift the restriction via admin tool<br>- Correct history records<br>- Inform operations of affected users |
+| 5 | Bulk file upload / import fails | Major | [ ] | Medium | Tested valid and invalid files | - Hotfix or rollback of that component only<br>- Prepare a component-specific rollback branch in advance |
+| 6 | Configuration / reference data missing in production | Major | Low | Medium | Data request reviewed | - Re-run table creation / initial data request<br>- Verify API endpoints |
+| 7 | API authentication / integration failure between services | Major | Low | Medium | Code review, staging testing | - Hotfix; use manual workaround in admin tool meanwhile |
+| 8 | User-facing core feature unusable (e.g., cannot enter live session, cannot complete transaction) | Critical | Low | High | Staging and UAT | - Investigate<br>- Hotfix if limited to specific conditions<br>- Rollback if all users are affected |
+| 9 | Email notification not sent / wrong template sent | Minor–Major | Low | Medium | Template verification in staging | - Hotfix or patch<br>- Resend / compensate affected users if needed |
+| 10 | Input validation accepts invalid values (empty, decimal, special characters) | Minor | Low | Low | Negative testing | - Bug fix in next patch |
+| 11 | UI state issue (e.g., button always enabled) | Minor | Low | Low | UI testing | - Bug fix in next patch |
+| 12 | Spelling, label or paragraph order errors | Trivial | Low | Low | Copy review | - Bug fix in next patch |
+
+### 6.2 Rollback Plan
+
+**Estimated rollback time:** [e.g., 30 minutes – 1 hour]
+
+| Action | Assignee | Remarks |
+| --- | --- | --- |
+| Get rollback approval from Product Owner | [Developer] | |
+| Notify project team and operations channels | [Developer] | |
+| Prepare rollback ticket and rollback pipeline | [Developer] | Rollback branch prepared **before** release day |
+| Get rollback approval from Manager | [Developer] | |
+| Execute rollback | Release Manager | |
+| Production verification after rollback | [QA] | Confirm the previous version is working |
+| Notify all channels of the result | [Developer], [QA] | |
+
+> If another team rolls back on the same day, re-release with only our team's changes.
+
+### 6.3 Hotfix Plan
+
+**Estimated hotfix release time:** [e.g., 45 minutes – 1 hour after the fix is ready]
+
+| Action | Assignee | Remarks |
+| --- | --- | --- |
+| Get hotfix approval from Product Owner | [Developer] | |
+| Fix the issue | [Developer] | |
+| Code review | Dev Team | |
+| QA testing of the fix (plus targeted regression) | [QA] | |
+| Notify project team and operations channels | [Developer], [QA] | |
+| Get release approval from Manager | [Developer] | |
+| Release the fix | Release Manager | |
+| Production verification | [QA] | |
+| Notify all channels of the result | [Developer], [QA] | |
+
+---
+
+## 7. Production Verification
+
+### 7.1 URLs
+
+- [User-facing application URL]
+- [Customer / client application URL]
+- [Admin / back-office tool URL]
+
+### 7.2 Test Accounts
+
+> Store passwords in a secure vault — **do not** paste credentials into the document.
+
+| Account Type | Description | Account ID | Email | Password Location |
+| --- | --- | --- | --- | --- |
+| [User role A] | [e.g., In-scope account type] | [ID] | [test email] | [Vault reference] |
+| [User role B] | [e.g., Out-of-scope account type — negative check] | [ID] | [test email] | [Vault reference] |
+| [Customer account] | [Plan / subscription type] | [ID] | [test email] | [Vault reference] |
+| [Staff account] | [Has access to new admin module] | [ID] | [test email] | [Vault reference] |
+
+### 7.3 Test Account Preparation
+
+| Preparation Scenario | Tool | Point Person | Remarks |
+| --- | --- | --- | --- |
+| [e.g., Unlock / activate test accounts] | [Admin tool] | [QA] | |
+| [e.g., Create bookings / transactions at specific times] | [User-facing app] | [QA] | [Short-notice vs. regular timing] |
+| [e.g., Apply a restriction manually for comparison] | [Admin tool] | [QA] | |
+
+### 7.4 Verification Details
+
+**Overall Status:** `Pending verification` → `Done — all results as expected`
+
+**General Checklist**
+
+| Verification Date | Area | Items |
+| --- | --- | --- |
+| [Date] | [Admin module] | - [ ] [Feature 1 works]<br>- [ ] [Editing existing settings works] |
+| [Date] | [User-facing module] | - [ ] [Expected records deleted/closed]<br>- [ ] [Records that should be kept are retained] |
+| [Date] | [Scheduled job] | - [ ] Job executed at [time, timezone]<br>- [ ] [Rule tier 1] applied correctly<br>- [ ] [Rule tier 2] applied correctly<br>- [ ] [Extended / repeat case] applied correctly |
+| [Date] | Email notifications | - [ ] [User notification — new]<br>- [ ] [User notification — extended]<br>- [ ] [Staff summary report] |
+
+**Detailed Checklist (example format)**
+
+| Steps | Expected Result | [Variant A] | [Variant B] |
+| --- | --- | --- | --- |
+| 1. [Step]<br>2. [Step] | Verify [expected behavior] | Passed / Failed | Passed / Failed |
+| | Verify [log / record is created] | | |
+
+**Evidence:** [Link to screenshots / recordings folder]
+
+### 7.5 Data Verification Summary
+
+| What to Verify | SQL Query | Expected Result |
+| --- | --- | --- |
+| Total records processed by the job, grouped by rule tier | ```SELECT COUNT(*) AS total, COUNT(CASE WHEN result LIKE '%[TIER_1]%' THEN 1 END) AS tier_1, ... FROM [job_result_table] WHERE created_at >= '[YYYY-MM-DD]';``` | Total count per tier matches the expected list |
+| Only in-scope user types were affected | ```SELECT r.user_id, r.result, u.[user_type] FROM [job_result_table] r JOIN [user_table] u ON u.id = r.user_id WHERE r.created_at >= '[YYYY-MM-DD]';``` | All returned users are of the in-scope type only |
+| No data written for excluded cases | ```SELECT COUNT(*) FROM [table] WHERE [excluded condition];``` | Returns 0 |
+
+---
+
+## 8. Test Summary Report
+
+| Field | Value |
+| --- | --- |
+| **Project / Ticket** | [Name / ID] |
+| **QA Engineer(s)** | [Name] |
+| **Test Deliverables Reviewer** | [Name] |
+| **Test Type(s)** | [Manual / Automated — Functional, Regression, API, Smoke] |
+| **Test Environment** | [Staging environment name] |
+| **Test Deliverables Link** | [Link to test cases / scenario matrix] |
+
+### 8.1 Results per Test Suite
+
+> One table per suite (e.g., Business Rules Matrix, Admin Tool, Scheduled Job, Regression).
+
+**[Suite Name]**
+
+| Status | 1st Testing | Final Testing |
+| --- | --- | --- |
+| Not Yet Tested | [0] | [0] |
+| Passed | [ ] | [ ] |
+| Failed | [ ] | [0] |
+| Invalid | [ ] | [ ] |
+| Blocked | [ ] | [0] |
+| **Total** | **[ ]** | **[ ]** |
+
+### 8.2 Results per User / Account Type (optional)
+
+| Status | [Type A] | [Type B] | [Type C] | [Type D] |
+| --- | --- | --- | --- | --- |
+| Passed | | | | |
+| Failed | | | | |
+| Blocked | | | | |
+| Invalid (not applicable to this type) | | | | |
+| **Total** | | | | |
+
+### 8.3 Remarks Completeness Check
+
+| Status | Required Remark | Complete? |
+| --- | --- | --- |
+| Failed | Has a linked bug ticket | ✔ / N/A |
+| Invalid | Has a reason why it is invalid | ✔ / N/A |
+| Blocked | Has a reason why it is blocked | ✔ / N/A |
+
+### 8.4 Open Defects (Failed / Blocked)
+
+- [Ticket ID — Summary — Severity — Status] *(or N/A)*
+
+---
+
+## 9. Other Notes
+
+- [e.g., Expected list of records to be processed by the first production job run — attach file]
+- [Known limitations or follow-up items]
+
+---
+
+## 10. Issues Encountered (Post-Release Log)
+
+| Issue | Severity | Impact | Remarks | Resolution | Root Cause / Defect Analysis |
+| --- | --- | --- | --- | --- | --- |
+| [Ticket ID — description] | [Major] | - [What happened]<br>- [Who was affected] | | - Disabled job<br>- Code fix released [date] | [Link to defect analysis] |
+
+---
+
+## 11. Sign-off
+
+| Role | Name | Decision | Date |
+| --- | --- | --- | --- |
+| QA Engineer | | Ready for Release | |
+| QA Lead / Supervisor | | Approved | |
+| Senior Developer / Dev Supervisor | | Approved | |
+| Product Owner | | Approved | |
+| Release Manager | | Released | |
+
+---
+---
+
+# Appendix A — Lightweight Version (Defect Fix / Small Patch)
+
+> Use for single-component fixes or maintenance releases.
+
+### A1. Defect / Change Information
+
+| Field | Value | Field | Value |
+| --- | --- | --- | --- |
+| **Issue Title** | [Short description of defect] | **Ticket** | [ID / link] |
+| **Product Manager** | [Name] | **Business Analyst** | [Name / N/A] |
+| **Product Owner** | [Name] | **Software Engineer** | [Name] |
+| **Scrum Master** | [Name] | **QA Engineer** | [Name] |
+
+### A2. Implementation Plan
+
+**Code change:** [Short technical summary — e.g., "Added missing 'Bearer' prefix to the Authorization header in the service-to-service API call."]
+*(Optional: before/after code snippet)*
+
+### A3. Summary of Changes
+
+| Component | Summary of Changes |
+| --- | --- |
+| [Component] | 1. [Change]<br>2. [Change] |
+
+**Out of Scope:** [List]
+
+### A4. Test Summary Report
+*(Same format as Section 8 — Functional + Regression tables, remarks check, open defects.)*
+
+### A5. Release Log
+
+| Ticket | Component | Merge Request | Release Ticket | Data Update Request |
+| --- | --- | --- | --- | --- |
+| [ID] | [Name] | [Link] | [Link] | [Link / N/A] |
+
+### A6. Release Timeline
+
+| Date | Task | Person in Charge |
+| --- | --- | --- |
+| **Before the Release** |||
+| [Date] | - [ ] Test summary report<br>- [ ] UAT<br>- [ ] "Ready for Release" comment on merge request | QA |
+| [Date] | - [ ] Release ticket | Developer |
+| [Date] | - [ ] Release plan approval (2 Senior Devs + 2 Senior QAs) | Reviewers |
+| [Date] | - [ ] Change approval request filed | Scrum Master |
+| [Date] | - [ ] Inform QAs and stakeholders; share test account access | QA |
+| **During the Release** |||
+| [Date, Time] | - [ ] Deploy changes | Release Manager |
+| **After the Release** |||
+| [Date] | - [ ] Production verification | QA |
+| [Date] | - [ ] Close release ticket | Release Manager |
+| [Date] | - [ ] Inform stakeholders; update epic ticket | Product Manager |
+| [Date] | - [ ] Rollback or hotfix (if needed) | Release Manager |
+| [Date – Date] | - [ ] Monitor operations channel for reports (≈2 weeks) | Support & Maintenance Team |
+
+### A7. Other Releases on the Same Day
+*(Same format as Section 3.3)*
+
+### A8. Contingency Plan
+*(Rollback Plan, Hotfix Plan, and Risk table — same format as Section 6)*
+
+### A9. Production Verification
+
+| Verification Approach | Expected Result |
+| --- | --- |
+| [Scenario — e.g., "Cancel a booked session 3 days ahead for a customer on a fixed monthly plan with compensation enabled"] | [e.g., "Customer receives credit and the correct email template"] |
+| [Scenario — same-day / short-notice variant] | [Expected result] |
+
+URLs · Test accounts · Test account preparation · Data verification · Evidence *(same format as Section 7)*
