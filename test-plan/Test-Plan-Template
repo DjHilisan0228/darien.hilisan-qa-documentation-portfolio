@@ -1,10 +1,5 @@
 # Test Plan Template
 
-*Prepared by: Darien James Hilisan, QA Engineer*
-*Based on the test plans I wrote and maintained for web applications, admin tools, scheduled jobs, and learning-content releases (2022 – present).*
-
-> **How to use this template:** Replace everything in `[brackets]`. Delete sections that don't apply. Keep the scope section high-level at the start of a project and add detail as requirements are finalized. Each test case should be linked to the user story it tests.
-
 ---
 
 ## 0. Document Information
