@@ -1,0 +1,169 @@
+# Defect Analysis Report — Template
+  
+---
+
+## 1. Summary
+
+| Field | Details |
+| --- | --- |
+| **Project / Feature name** | [Project or feature name] |
+| **Affected services / applications** | [e.g. User-facing web portal, Shared web front end, Admin back-office tool, Scheduled job] |
+| **Change that introduced the defect** | [Link to the merge request / pull request / release of the original deployment] |
+| **Related ticket** | [Defect ticket ID and link] |
+| **Defect analysis meeting date(s)** | [YYYY-MM-DD] (project team) <br> [YYYY-MM-DD] (with leads) |
+
+---
+
+## 2. Problem
+
+*What happened, from the user's point of view. Keep it factual and specific.*
+
+- [Describe the incorrect behavior. Example: "Users with an active restriction were still able to reopen a blocked time slot."]
+- [Describe any data condition that triggers it. Example: "Happens only when no record exists from the previous day's job run."]
+
+**Evidence**
+- [Screenshots / screen recording]
+- [Error logs, monitoring screenshots, or query results]
+
+---
+
+## 3. Cause (root cause)
+
+*Why it happened — the technical or process reason, not just the symptom.*
+
+- [Technical cause. Example: "The reference date used a 24-hour window instead of the required 48-hour window."]
+- [Contributing factor, if any. Example: "Another fix touching the same module was released first, and a merge conflict reintroduced the old behavior."]
+- [Code reference: link to the specific diff, or a before/after snippet]
+
+> Tip: Ask "why?" until you reach something the team can actually change (requirements, test scope, code review, release process).
+
+---
+
+## 4. Impact
+
+- **User impact:** [What users could not do or saw incorrectly]
+- **Data impact:** [Records created, updated or missed incorrectly; number of affected users, e.g. "120 of 2,698 users"]
+- **Operations impact:** [Extra manual work for support or operations teams; any lost project benefit]
+
+---
+
+## 5. Reporter
+
+- [Who found it: Client / Business stakeholder / Operations team / Project team / Found during production checks / Monitoring alert]
+- [Link to the report or ticket]
+
+---
+
+## 6. Timeline of events
+
+| Event | Date and time (with timezone) | Reference |
+| --- | --- | --- |
+| **Initial deployment** | [YYYY-MM-DD HH:MM TZ] | [Link to release announcement] |
+| **First run of scheduled job** *(if applicable)* | [YYYY-MM-DD HH:MM TZ] | |
+| **Reported** | [YYYY-MM-DD HH:MM TZ] | [Link to report] |
+| **Quick fix / mitigation applied** | [YYYY-MM-DD HH:MM TZ] or N/A | [e.g. "Scheduled job turned off", "Feature disabled"] |
+| **Data correction** *(if applicable)* | [YYYY-MM-DD] | [e.g. "Incorrect restrictions removed for affected users"] |
+| **Fix released / resolved** | [YYYY-MM-DD HH:MM TZ] or TBD | [Link to release announcement] |
+| **Duration of impact** | [e.g. "9 hrs 24 mins" or "13 days"] | [Start → end] |
+
+---
+
+## 7. Workaround
+
+*What users or staff could do while waiting for the fix.*
+
+- [Example: "Staff closed the affected slots manually in the admin tool."]
+- [Example: "Users could view next-day schedules from the calendar page instead of the dashboard."]
+- [Or: "None"]
+
+---
+
+## 8. Resolution
+
+- [What was changed to fix it. Example: "If no previous-day record exists, the system now treats it as the lowest threshold and evaluates the current data."]
+- [Link to fix merge request / pull request]
+- [Link to release merge request, if different]
+- [Any data clean-up done for affected users]
+
+---
+
+## 9. Prevention
+
+*Concrete actions to stop this type of defect happening again. Group by area and give each an owner if possible.*
+
+| Area | Action | Owner |
+| --- | --- | --- |
+| **Requirements** | [e.g. Write edge cases into the spec explicitly: "What happens when no previous record exists?"; include time windows in the functional spec; get client sign-off on scope and on a manual process flowchart] | [Name / role] |
+| **Pre-implementation** | [e.g. Hold a walkthrough with developer, QA and product owner to agree expected behavior, fallback conditions and data dependencies] | |
+| **Test design** | [e.g. Expand test scope to include next-day and later data; include other user types; include actions done ahead of time] | |
+| **Retesting after bug fixes** | [e.g. Agree the retest scope with the developer for every fix; keep a user-story checklist for quick rechecks before UAT and release] | |
+| **Code review** | [e.g. Question any change to data types; check every part of the system that writes to a table before relying on it] | |
+| **Release process** | [e.g. Release non-urgent patches that touch the same module on the same branch/date to avoid merge conflicts] | |
+| **Monitoring** | [e.g. Watch application logs for errors during testing and production checks] | |
+
+---
+
+## 10. Classification
+
+| Item | Value | Reason |
+| --- | --- | --- |
+| **Severity level** | Critical / Major / Minor / Trivial | [e.g. "Major – core requirement of the scheduled job; 2 users affected"] |
+| **Counted against system usability / availability?** | YES / NO | [e.g. "NO – no downtime; only data records affected and corrected the same day"] |
+| **Counted in Defect Detection Percentage (DDP)?** | YES / NO | [YES if testing should have caught it; NO if the behavior was not in the original requirements] |
+
+### Business interruption check
+*Counted as a business interruption only if **all four** criteria are YES.*
+
+| Criterion | Guidance | Answer | Reason |
+| --- | --- | --- | --- |
+| **1. Interrupted normal operations?** | Affected core operations, e.g. session management, payments/fees, the application itself, delivery of the service | YES / NO | |
+| **2. Needed a release to resolve?** | Has workaround + release done → YES <br> Has workaround + no release → NO <br> No workaround + release done → YES | YES / NO | |
+| **3. Needed extra attention?** | An emergency chat/war room was created, or extra people / other teams had to help | YES / NO | |
+| **4. High number of reports?** | Number of reported incidents is high compared with the normal trend | YES / NO | |
+| **Result: Business interruption?** | | **YES / NO** | |
+
+---
+
+## 11. People involved
+
+| Role | Name |
+| --- | --- |
+| **Developer (initial development)** | [Name] |
+| **Developer (fix)** | [Name] |
+| **QA Engineer** | [Name] |
+| **QA Reviewer** | [Name] |
+| **Code Reviewer (initial)** | [Name] |
+| **Code Reviewer (fix)** | [Name] |
+
+---
+
+## 12. After the meeting — labels / tags
+
+Add these labels to the page so reports can be filtered and counted:
+
+1. **Severity:** `critical`, `major`, `minor` or `trivial`
+2. **If counted against system usability:** `counted-usability`
+3. **If counted in DDP:** `counted-ddp`
+4. **Affected service:** e.g. `web-portal`, `admin-tool`, `backend`, `scheduled-job`
+
+Reference: [Link to your organization's severity level definitions]
+
+---
+
+## Appendix A — Filled-in example (anonymized)
+
+| Field | Details |
+| --- | --- |
+| **Title** | [1H 2025] – Booked slots disabled after user opens the lesson notes page |
+| **Affected service** | User-facing web portal |
+| **Problem** | After a user opened the lesson notes page, an already-booked slot became disabled on the schedule page, even though it was still within the allowed cancellation window. |
+| **Cause** | A new log entry was written the first time the notes page was opened. It updated a status flag, which reset the "1 hour since booking" calculation. |
+| **Impact** | Users had to ask the operations team to close the slot, which undid one of the project's goals (reducing requests to operations). |
+| **Reporter** | Project team |
+| **Timeline** | Deployed 09:47 → reported 10:30 next day → quick fix 11:38 → fix released 15:00. **Duration: 4 hrs 30 mins** |
+| **Workaround** | Close the slot via the admin scheduler, or wait 1 hour after first opening the notes page. |
+| **Resolution** | Added a check on the flag in the log table. |
+| **Prevention** | When relying on logs, check every part of the system that writes to that table. Add "open lesson notes ahead of time" to test scenarios. |
+| **Severity** | Minor |
+| **Counted in DDP?** | YES – the schedule page wasn't rechecked after opening the notes page during spot checks. |
+| **Business interruption?** | NO – workaround available and only the project team reported it. |
