@@ -154,7 +154,7 @@ Reference: [Link to your organization's severity level definitions]
 
 | Field | Details |
 | --- | --- |
-| **Title** | [1H 2025] – Booked slots disabled after user opens the lesson notes page |
+| **Title** | Booked slots disabled after user opens the lesson notes page |
 | **Affected service** | User-facing web portal |
 | **Problem** | After a user opened the lesson notes page, an already-booked slot became disabled on the schedule page, even though it was still within the allowed cancellation window. |
 | **Cause** | A new log entry was written the first time the notes page was opened. It updated a status flag, which reset the "1 hour since booking" calculation. |
