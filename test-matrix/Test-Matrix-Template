@@ -1,0 +1,186 @@
+# Test Scenario Matrix Template
+
+**Author:** Darien James Hilisan, QA Engineer
+**Purpose:** A reusable test scenario matrix (also called a test matrix or test condition matrix). It gives a high-level view of the combinations of parameters, user types, states and test data a feature must be tested against. Each part maps a functional event to the UI and data it should produce, so test cases can be written for every condition without repeating any.
+
+> **How to use:** Create one matrix per feature during test planning, before development testing starts. Keep the sections that apply to your feature and delete the rest. Then write one test case for each matrix row or combination (see Section 9).
+
+---
+
+## 0. Document information
+
+| Field | Value |
+| --- | --- |
+| Feature / module | `[Feature name]` |
+| Related ticket / user story | `[Ticket ID and link]` |
+| Related test plan | `[Link]` |
+| Specification / design source | `[Requirements doc, design file link]` |
+| Author (QA Engineer) | `[Name]` |
+| Reviewer | `[Name]` |
+| Version / last updated | `[v1.0]` / `[YYYY-MM-DD]` |
+
+---
+
+## 1. Glossary of codes and abbreviations
+
+Define every short code, variant or status value used in the matrix so any reviewer can read it.
+
+| Code | Meaning |
+| --- | --- |
+| `[V1]` | `[Variant 1, e.g., Course A / Plan A / Material A]` |
+| `[V2]` | `[Variant 2]` |
+| `[V3]` | `[Variant 3]` |
+| `[STATUS_0]` | `[e.g., Pending]` |
+| `[STATUS_1]` | `[e.g., Approved]` |
+| ~~`[Vx]`~~ | `[Retired variant, struck through and kept for history]` |
+
+---
+
+## 2. Test accounts / user types
+
+List the user types (or account types) under test and the data conditions that define each one, so testers set up the right test data.
+
+| User type | Data conditions that define this type | Test account ID |
+| --- | --- | --- |
+| `[New applicant]` | 1. Record exists in `[users]` with `status = [X]` <br> 2. No record in `[partner_users]` <br> 3. No record in `[special_program_users]` | `[ID]` |
+| `[Re-applicant]` | 1. Record exists in `[users]` with `status = [Y]` <br> 2. … | `[ID]` |
+| `[Inactive for 6+ months]` | 1. Record exists in `[users]` with `status = [Z]` <br> 2. … | `[ID]` |
+| `[Active user, Type A]` | … | `[ID]` |
+
+---
+
+## 3. Design reference (UI and front end)
+
+Map each screen, modal or component to its design and to the conditions under which it should appear.
+
+| Section / screen | Display conditions and notes | UI / design reference |
+| --- | --- | --- |
+| `[Main page / landing page]` | URL: `<HOST>/[path]` <br> Shown when: `[condition, e.g., user type = applicant AND flag = 1]` | `[Screenshot or design link]` |
+| `[Confirmation modal]` | Fields shown: `[Full name = users.name]`, `[Birthdate = users.birth_date]` | `[Screenshot or design link]` |
+| `[Success modal]` | Shown after: `[action]` | `[Screenshot or design link]` |
+| `[Error / notice modal]` | Shown when: `[invalid condition, e.g., no item selected]` | `[Screenshot or design link]` |
+| `[Empty / no-data state]` | Shown when: `[condition]` | `[Screenshot or design link]` |
+| `[Status / result page]` | URL: `<HOST>/[path]/status` <br> Data written: see Section 4 | `[Screenshot or design link]` |
+
+---
+
+## 4. Database / back-end reference
+
+Map each user action or system trigger to the data change it should cause, which variants it applies to, and the query to check it.
+
+| Section | Action / trigger | Applies to | Expected data change | Verification query |
+| --- | --- | --- | --- | --- |
+| `[Watch / view content]` | `[On video completion]` | ✔︎ V1 ✔︎ V2 ✘ V3 | Progress record created with `content_type = 1` | `SELECT * FROM [progress_table] WHERE user_id = :uid AND item_id = :itemId AND content_type = 1;` |
+| `[Read section]` | `[On panel expand]` | ✔︎ V1 ✔︎ V2 ✔︎ V3 | Progress record created with `content_type = 2` | `SELECT … ;` |
+| `[Submit form, no approval]` | `[On Submit]` | ✘ V1 ✔︎ V2 ✘ V3 | Progress record created | `SELECT … ;` |
+| `[Submit form, with approval]` | `[On Submit]` | ✔︎ V1 ✘ V2 ✘ V3 | Submission saved with `status = 0 (Pending)` | `SELECT … WHERE status = 0;` |
+| `[File upload, with approval]` | `[On Submit]` | ✔︎ V1 ✘ V2 ✘ V3 | Upload record saved with hashed file name, `status = 0` | `SELECT … ;` |
+| `[Quiz / assessment]` | `[On Submit]` | ✔︎ All | Answers and score summary saved | `SELECT … ;` |
+| `[Assessment passed]` | `[Score ≥ passing score]` | ✔︎ All | Passer record saved with `expires_at = today + 1 year` | `SELECT … ;` |
+| `[Status update]` | `[On Confirm]` | ✔︎ All | Status set to `[2]`; related slot or record updated | `SELECT … ;` |
+| `[Negative check]` | `[Closing / deleting an item]` | ✔︎ All | **No record returned** | `SELECT … ;` → expect 0 rows |
+
+> Use named parameters (`:uid`, `@date`) so the same queries can be reused across environments.
+
+---
+
+## 5. State transition matrix
+
+Use this when the feature behaves differently depending on where the user currently is in a workflow.
+
+| # | Current status / level | Current workflow step | Completed flag | Expected result (UI) | Expected result (data) |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `[0]` | `[1]` | `0` | Show `[new page]`, then go to `[Step: Assessment]` | `flag = 1`, `step = 1` |
+| 2 | `[14]` | `[2]` | `0` | Show `[new page]`, then go to `[Step: Interview]` | … |
+| 3 | `[20]` | `[3]` | `0` | Show `[new page]`, then go to `[Step: Onboarding]` | … |
+| 4 | `[Any]` | `[Final step]` | `0 or 1` | Skip `[new page]`, go to `[next page]` | `flag = 0` (completed before the feature) / `1` (completed through the feature) |
+| 5 | `[11]` | *no record* | *no record* | Status updates on login, then show `[new page]` | … |
+| 6 | `[Edge case, e.g., rejected twice]` | `[6]` | `0` | … | … |
+
+---
+
+## 6. Decision table (business rules)
+
+Use this when a result depends on several yes/no conditions. Each row is one combination and becomes at least one test case. A dash (–) means the condition is not checked because an earlier condition already decided the result.
+
+| # | Cond. A: `[Feature enabled for user type?]` | Cond. B: `[Limit not yet reached?]` | Cond. C: `[Enabled for this time slot?]` | Cond. D: `[More than X minutes before start?]` | Cond. E: `[Capacity ratio not yet reached?]` | Cond. F: `[Extra rule enabled?]` | Cond. G: `[Item passes extra rule?]` | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Yes | Yes | Yes | Yes | Yes | Yes | Yes | `[Item opened WITH special tag]` |
+| 2 | Yes | Yes | Yes | Yes | Yes | Yes | No | `[Item is a candidate for special tag]` |
+| 3 | Yes | Yes | Yes | Yes | Yes | No | – | `[Item is a candidate for special tag]` |
+| 4 | Yes | Yes | Yes | Yes | No | – | – | `[Item opened WITHOUT special tag]` |
+| 5 | Yes | Yes | Yes | No | – | – | – | `[Item opened WITHOUT special tag]` |
+| 6 | Yes | Yes | No | – | – | – | – | `[Item opened WITHOUT special tag]` |
+| 7 | Yes | No | – | – | – | – | – | `[Item opened WITHOUT special tag]` |
+| 8 | No | – | – | – | – | – | – | `[Item opened WITHOUT special tag]` |
+
+---
+
+## 7. Calculation / scoring rules matrix
+
+Use this for features that compute scores, ratings, fees or other derived values. Test each input value, each boundary and the empty state.
+
+**7.1 Input → raw value**
+
+| Criterion | Input value | Raw value |
+| --- | --- | --- |
+| `[Criterion 1, e.g., Follows instructions]` | YES / SOMETIMES / NO | `1.0` / `0.8` / `0.6` |
+| `[Criterion 2, e.g., Error count]` | 0–4 / 5–9 / ≥10 | `1.5` / `1.2` / `0.9` |
+| `[Criterion 3]` | 0–1 / 2 / ≥3 | `2.0` / `1.6` / `1.2` |
+| `[Any criterion]` | *Empty* | `""` (blank) |
+
+**7.2 Raw → rating → final result**
+
+| Section | Raw formula | Rating thresholds | Final display |
+| --- | --- | --- | --- |
+| `[Section 1]` | `Raw = C1 + C2 + C3 + C4` | `> 4.4 → A`, `> 3.4 → B`, `< 3.4 → C`, `0 → ""` | `A → [Very Good]`, `B → [OK]`, `C → [Practice]`; `0` if all inputs are empty |
+| `[Section 2]` | `Raw = …` | … | … |
+
+> Boundary values to test: exactly at each threshold (e.g., 4.4 and 3.4), just above and below it, all inputs at maximum, all at minimum, and all empty.
+
+---
+
+## 8. Content / expected text matrix
+
+Use this when the text shown changes with a level, rating or variant (feedback messages, tips, notifications, emails).
+
+| Level / variant | Positive message (shown when criterion is met) | Improvement tip (shown when criterion is not met) | Conditional message |
+| --- | --- | --- | --- |
+| `[Level 1]` | `(+) [Item 1]: [message]` | `[Item 1] tip: [message]` | `[Message]` (only if rating = A) |
+| `[Level 2]` | … | … | … |
+| `[Level 3]` | … | … | … |
+
+---
+
+## 9. Test scenario matrix → test cases
+
+Each row of Sections 4–8 should become at least one test case. Use this format for the test cases.
+
+| No. | Ticket | Scenario title | Prerequisites / test data | Steps | Expected result | Staging: tester / date / status | Production: tester / date / status | Automation status | Comments |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | `[ID]` | `[Verify progress is saved when video finishes – V1]` | User type: `[Active user, Type A]`; run setup query from Section 4 | 1. Log in <br> 2. Open `[page]` <br> 3. Play video to the end | UI marks item complete; progress record created (Section 4) | `[Name] / [Date] / Pass` | `[Name] / [Date] / Pass` | Pending / In progress / Done / N/A | |
+| 2 | `[ID]` | `[Verify error modal when nothing is selected]` | … | … | Error modal shown (Section 3); no record created | | | | |
+| 3 | `[ID]` | `[Verify decision table row 4: capacity reached]` | … | … | Item opened WITHOUT special tag | | | | |
+
+**Status values:** Pass · Fail · Blocked · Invalid · Not run
+
+---
+
+## 10. Other references
+
+| Reference | Link / value |
+| --- | --- |
+| Page URLs per variant | `[V1: /path/v1/item-#]`, `[V2: /path/v2/item-#]` |
+| Configuration / master data table | `[Table of IDs, titles, passing scores, item counts, categories]` |
+| Specification documents | `[Link]` |
+| Related business-rule pages | `[Link]` |
+| Log / monitoring dashboards | `[Link]` |
+
+---
+
+## 11. Review and sign-off
+
+| Review stage | Reviewer | Date | Status | Comments |
+| --- | --- | --- | --- | --- |
+| Peer QA review of matrix | `[Name]` | `[YYYY-MM-DD]` | Draft / Under review / Approved | |
+| Test case review | `[Name]` | `[YYYY-MM-DD]` | Draft / Under review / Approved | |
