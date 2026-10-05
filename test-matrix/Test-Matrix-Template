@@ -1,10 +1,5 @@
 # Test Scenario Matrix Template
 
-**Author:** Darien James Hilisan, QA Engineer
-**Purpose:** A reusable test scenario matrix (also called a test matrix or test condition matrix). It gives a high-level view of the combinations of parameters, user types, states and test data a feature must be tested against. Each part maps a functional event to the UI and data it should produce, so test cases can be written for every condition without repeating any.
-
-> **How to use:** Create one matrix per feature during test planning, before development testing starts. Keep the sections that apply to your feature and delete the rest. Then write one test case for each matrix row or combination (see Section 9).
-
 ---
 
 ## 0. Document information
